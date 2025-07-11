@@ -92,17 +92,38 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8 animate-fade-in">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Target className="h-8 w-8 text-blue-600" />
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-              HabitFlow
-            </h1>
+      {/* Navigation Bar */}
+      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Target className="h-8 w-8 text-blue-600" />
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+                HabitFlow
+              </h1>
+            </div>
+            <div className="flex items-center gap-6">
+              <div className="hidden md:flex items-center gap-6">
+                <span className="text-sm text-gray-600">Total Streak: <span className="font-semibold text-blue-600">{totalStreak}</span></span>
+                <span className="text-sm text-gray-600">Today: <span className="font-semibold text-green-600">{completedToday}/{habits.length}</span></span>
+              </div>
+              <Dialog open={isAddingHabit} onOpenChange={setIsAddingHabit}>
+                <DialogTrigger asChild>
+                  <Button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Habit
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <HabitForm onSubmit={addHabit} onCancel={() => setIsAddingHabit(false)} />
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
-          <p className="text-gray-600 text-lg">Build better habits, one day at a time</p>
         </div>
+      </nav>
+
+      <div className="container mx-auto px-4 py-8">
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 animate-fade-in">
