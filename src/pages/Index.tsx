@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import HabitCard from '@/components/HabitCard';
 import HabitForm from '@/components/HabitForm';
-import CalendarView from '@/components/CalendarView';
 import Statistics from '@/components/Statistics';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -104,6 +103,8 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-6">
               <div className="hidden md:flex items-center gap-6">
+                <span className="text-blue-600 font-semibold">Dashboard</span>
+                <a href="/calendar" className="text-gray-600 hover:text-blue-600 transition-colors">Calendar</a>
                 <span className="text-sm text-gray-600">Total Streak: <span className="font-semibold text-blue-600">{totalStreak}</span></span>
                 <span className="text-sm text-gray-600">Today: <span className="font-semibold text-green-600">{completedToday}/{habits.length}</span></span>
               </div>
@@ -166,14 +167,10 @@ const Index = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="dashboard" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-white rounded-xl shadow-sm">
+          <TabsList className="grid w-full grid-cols-2 mb-8 bg-white rounded-xl shadow-sm">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <Target className="h-4 w-4" />
               Dashboard
-            </TabsTrigger>
-            <TabsTrigger value="calendar" className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              Calendar
             </TabsTrigger>
             <TabsTrigger value="statistics" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
@@ -227,10 +224,6 @@ const Index = () => {
                 ))}
               </div>
             )}
-          </TabsContent>
-
-          <TabsContent value="calendar" className="animate-fade-in">
-            <CalendarView habits={habits} />
           </TabsContent>
 
           <TabsContent value="statistics" className="animate-fade-in">
