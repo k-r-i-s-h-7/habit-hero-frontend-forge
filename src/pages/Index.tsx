@@ -17,6 +17,7 @@ export interface Habit {
   completedToday: boolean;
   completionHistory: { date: string; completed: boolean }[];
   createdAt: string;
+  daysOfWeek: number[]; // 0-6 (Sunday-Saturday)
 }
 
 const Index = () => {
@@ -29,7 +30,8 @@ const Index = () => {
       streak: 7,
       completedToday: true,
       completionHistory: [],
-      createdAt: '2024-06-01'
+      createdAt: '2024-06-01',
+      daysOfWeek: [1, 2, 3, 4, 5] // Weekdays
     },
     {
       id: '2',
@@ -39,7 +41,8 @@ const Index = () => {
       streak: 12,
       completedToday: false,
       completionHistory: [],
-      createdAt: '2024-05-15'
+      createdAt: '2024-05-15',
+      daysOfWeek: [1, 2, 3, 4, 5, 6] // Monday to Saturday
     },
     {
       id: '3',
@@ -49,7 +52,8 @@ const Index = () => {
       streak: 5,
       completedToday: true,
       completionHistory: [],
-      createdAt: '2024-06-05'
+      createdAt: '2024-06-05',
+      daysOfWeek: [0, 1, 2, 3, 4, 5, 6] // Every day
     }
   ]);
 
@@ -67,6 +71,10 @@ const Index = () => {
     setHabits([...habits, habit]);
     setIsAddingHabit(false);
   };
+
+  // Filter habits for today
+  const today = new Date().getDay();
+  const todaysHabits = habits.filter(habit => habit.daysOfWeek.includes(today));
 
   const toggleHabit = (id: string) => {
     setHabits(habits.map(habit => {
@@ -87,7 +95,7 @@ const Index = () => {
   };
 
   const totalStreak = habits.reduce((sum, habit) => sum + habit.streak, 0);
-  const completedToday = habits.filter(habit => habit.completedToday).length;
+  const completedToday = todaysHabits.filter(habit => habit.completedToday).length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
@@ -106,7 +114,7 @@ const Index = () => {
                 <span className="text-blue-600 font-semibold">Dashboard</span>
                 <a href="/calendar" className="text-gray-600 hover:text-blue-600 transition-colors">Calendar</a>
                 <span className="text-sm text-gray-600">Total Streak: <span className="font-semibold text-blue-600">{totalStreak}</span></span>
-                <span className="text-sm text-gray-600">Today: <span className="font-semibold text-green-600">{completedToday}/{habits.length}</span></span>
+                <span className="text-sm text-gray-600">Today: <span className="font-semibold text-green-600">{completedToday}/{todaysHabits.length}</span></span>
               </div>
               <Dialog open={isAddingHabit} onOpenChange={setIsAddingHabit}>
                 <DialogTrigger asChild>
@@ -147,7 +155,7 @@ const Index = () => {
               </div>
               <div>
                 <p className="text-gray-600 text-sm">Completed Today</p>
-                <p className="text-2xl font-bold text-gray-900">{completedToday}/{habits.length}</p>
+                <p className="text-2xl font-bold text-gray-900">{completedToday}/{todaysHabits.length}</p>
               </div>
             </div>
           </div>
@@ -158,8 +166,8 @@ const Index = () => {
                 <BarChart3 className="h-6 w-6 text-purple-600" />
               </div>
               <div>
-                <p className="text-gray-600 text-sm">Active Habits</p>
-                <p className="text-2xl font-bold text-gray-900">{habits.length}</p>
+                <p className="text-gray-600 text-sm">Today's Habits</p>
+                <p className="text-2xl font-bold text-gray-900">{todaysHabits.length}</p>
               </div>
             </div>
           </div>
@@ -194,11 +202,11 @@ const Index = () => {
               </Dialog>
             </div>
 
-            {habits.length === 0 ? (
+            {todaysHabits.length === 0 ? (
               <div className="text-center py-12 bg-white rounded-2xl shadow-lg border border-gray-100">
                 <Target className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No habits yet</h3>
-                <p className="text-gray-600 mb-6">Start building better habits today!</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No habits for today</h3>
+                <p className="text-gray-600 mb-6">{habits.length === 0 ? 'Start building better habits today!' : 'No habits scheduled for today. Add one or check your existing habit schedules.'}</p>
                 <Button 
                   onClick={() => setIsAddingHabit(true)}
                   className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white rounded-xl"
@@ -209,7 +217,7 @@ const Index = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {habits.map((habit, index) => (
+                {todaysHabits.map((habit, index) => (
                   <div 
                     key={habit.id} 
                     className="animate-fade-in"

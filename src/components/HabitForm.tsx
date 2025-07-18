@@ -5,12 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface HabitFormProps {
   onSubmit: (habit: {
     name: string;
     description: string;
     color: string;
+    daysOfWeek: number[];
   }) => void;
   onCancel: () => void;
 }
@@ -26,22 +28,43 @@ const colors = [
   'bg-orange-500'
 ];
 
+const daysOfWeek = [
+  { label: 'Sunday', value: 0 },
+  { label: 'Monday', value: 1 },
+  { label: 'Tuesday', value: 2 },
+  { label: 'Wednesday', value: 3 },
+  { label: 'Thursday', value: 4 },
+  { label: 'Friday', value: 5 },
+  { label: 'Saturday', value: 6 }
+];
+
 const HabitForm: React.FC<HabitFormProps> = ({ onSubmit, onCancel }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [selectedColor, setSelectedColor] = useState(colors[0]);
+  const [selectedDays, setSelectedDays] = useState<number[]>([1, 2, 3, 4, 5]); // Default to weekdays
+
+  const toggleDay = (day: number) => {
+    setSelectedDays(prev =>
+      prev.includes(day)
+        ? prev.filter(d => d !== day)
+        : [...prev, day]
+    );
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.trim()) {
+    if (name.trim() && selectedDays.length > 0) {
       onSubmit({
         name: name.trim(),
         description: description.trim(),
-        color: selectedColor
+        color: selectedColor,
+        daysOfWeek: selectedDays
       });
       setName('');
       setDescription('');
       setSelectedColor(colors[0]);
+      setSelectedDays([1, 2, 3, 4, 5]);
     }
   };
 
@@ -101,6 +124,32 @@ const HabitForm: React.FC<HabitFormProps> = ({ onSubmit, onCancel }) => {
               />
             ))}
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-sm font-medium text-gray-700">
+            Active Days
+          </Label>
+          <div className="grid grid-cols-2 gap-2">
+            {daysOfWeek.map((day) => (
+              <div key={day.value} className="flex items-center space-x-2">
+                <Checkbox
+                  id={`day-${day.value}`}
+                  checked={selectedDays.includes(day.value)}
+                  onCheckedChange={() => toggleDay(day.value)}
+                />
+                <Label 
+                  htmlFor={`day-${day.value}`}
+                  className="text-sm font-normal cursor-pointer"
+                >
+                  {day.label}
+                </Label>
+              </div>
+            ))}
+          </div>
+          {selectedDays.length === 0 && (
+            <p className="text-red-500 text-xs">Please select at least one day</p>
+          )}
         </div>
 
         <div className="flex gap-3 pt-4">

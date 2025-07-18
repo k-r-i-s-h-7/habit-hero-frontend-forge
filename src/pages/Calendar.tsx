@@ -14,7 +14,8 @@ const Calendar = () => {
       streak: 7,
       completedToday: true,
       completionHistory: [],
-      createdAt: '2024-06-01'
+      createdAt: '2024-06-01',
+      daysOfWeek: [1, 2, 3, 4, 5] // Weekdays
     },
     {
       id: '2',
@@ -24,7 +25,8 @@ const Calendar = () => {
       streak: 12,
       completedToday: false,
       completionHistory: [],
-      createdAt: '2024-05-15'
+      createdAt: '2024-05-15',
+      daysOfWeek: [1, 2, 3, 4, 5, 6] // Monday to Saturday
     },
     {
       id: '3',
@@ -34,7 +36,8 @@ const Calendar = () => {
       streak: 5,
       completedToday: true,
       completionHistory: [],
-      createdAt: '2024-06-05'
+      createdAt: '2024-06-05',
+      daysOfWeek: [0, 1, 2, 3, 4, 5, 6] // Every day
     }
   ]);
 
