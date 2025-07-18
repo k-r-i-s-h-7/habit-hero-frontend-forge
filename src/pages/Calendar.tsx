@@ -5,41 +5,7 @@ import type { Habit } from './Index';
 
 const Calendar = () => {
   // For now, using sample habits - in a real app, this would come from shared state or API
-  const [habits] = useState<Habit[]>([
-    {
-      id: '1',
-      name: 'Morning Meditation',
-      description: '10 minutes of mindfulness',
-      color: 'bg-blue-500',
-      streak: 7,
-      completedToday: true,
-      completionHistory: [],
-      createdAt: '2024-06-01',
-      daysOfWeek: [1, 2, 3, 4, 5] // Weekdays
-    },
-    {
-      id: '2',
-      name: 'Daily Exercise',
-      description: '30 minutes of physical activity',
-      color: 'bg-green-500',
-      streak: 12,
-      completedToday: false,
-      completionHistory: [],
-      createdAt: '2024-05-15',
-      daysOfWeek: [1, 2, 3, 4, 5, 6] // Monday to Saturday
-    },
-    {
-      id: '3',
-      name: 'Read Books',
-      description: 'Read for at least 20 minutes',
-      color: 'bg-purple-500',
-      streak: 5,
-      completedToday: true,
-      completionHistory: [],
-      createdAt: '2024-06-05',
-      daysOfWeek: [0, 1, 2, 3, 4, 5, 6] // Every day
-    }
-  ]);
+  const [habits] = useState<Habit[]>([]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
